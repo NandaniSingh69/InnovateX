@@ -72,7 +72,7 @@ Payment Gateway	Razorpay / Stripe (for secure transactions)
 📞 Contact & Support
 📧 Email:nandanisingh8855@gmail.com
 2.Shreya Latke: https://github.com/shreyalatke04
-3.Bhavika Singh[:](https://github.com/bhavika2203)
+3.Bhavika Singh:(https://github.com/bhavika2203)
 🌍 Website:
 📂 GitHub Repo: [GitHub.com/YourRepo]
 
