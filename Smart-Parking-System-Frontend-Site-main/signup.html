@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SemantiX Parking System</title>
+    
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="signup.css">
+</head>
+<body>
+
+    <!-- Header Section -->
+    <div class="header">
+        <a href="index.html"><img src="Logo.png" alt="logo" class="Logo" width="55px" height="60px"></a>
+
+        <div class="search-container">
+            <form class="searchBar">
+                <input type="text" placeholder="Search our services..." name="search">
+            </form>
+        </div>
+
+        <!-- Social Media Links -->
+        <div class="follow">
+            <a href="https://www.instagram.com/spotify" target="_blank"><img src="Facebook.jpg" alt="Facebook"></a>
+            <a href="https://twitter.com/spotify" target="_blank"><img src="Instagram.jpg" alt="Instagram"></a>
+            <a href="https://www.facebook.com/SpotifyIndia" target="_blank"><img src="Twitter.jpg" alt="Twitter"></a>
+        </div>
+
+        <!-- Hamburger Menu -->
+        <div class="hamburger-menu">
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <ul class="hamburger-dropdown">
+                <li><a href="home.html">Home</a></li>
+                <li><a href="products.html">Products</a></li>
+                <li><a href="admin.html">Admin</a></li>
+                <li><a href="blogs.html">Blogs</a></li>
+                <li><a href="Contact.html">Contact Us</a></li>
+                <li><a href="signinup.html">Sign In/Up</a></li>
+                <li>
+                    <i class="fa fa-user"></i> <a href="#" style="text-decoration: none; color:black">Support</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Navigation Bar -->
+    <div class="SecondHeader">
+        <nav>
+            <div class="brand">
+                <h1>PARKVERSE <span style="color: rgb(48, 124, 255);">मुंबई</span></h1>
+            </div>
+            <div class="navlink">
+                <ul>
+                    <li><a href="home.html">Home</a></li>
+                    <li><a href="products.html">Map</a></li>
+                    <li><a href="Contact.html">Booking</a></li>
+                    <li><a href="blogs.html">Client</a></li>
+                    <li><a href="admin.html">Admin</a></li>
+                    <li><a href="signinup.html">Sign In/Up</a></li>
+                </ul>
+            </div>
+        </nav>
+    </div>
+
+    <!-- Main Section -->
+    <div class="main">
+        <div class="container forms">
+            <!-- Signup Form -->
+            <div class="form signup">
+                <div class="signin_signup">
+                    <button class="signin" id="signin">
+                        <a href="signinup.html" style="text-decoration: none; color:black;">Sign In</a>
+                    </button>
+                    <button class="signup" id="signup" style="background-color:#3c6dff">
+                        <a href="signup.html" style="text-decoration: none; color:white;">Sign Up</a>
+                    </button>
+                </div>
+
+                <div class="form-content">
+                    <h1>Sign Up</h1>
+                    <div class="container">
+                        <form>
+                            <label for="name">Full Name *</label>
+                            <input type="text" id="name" placeholder="Enter your name" required>
+
+                            <label for="email">Personal Email Address *</label>
+                            <input type="email" id="email" placeholder="yourname@email.com" required>
+
+                            <label for="phone">Phone Number *</label>
+                            <input type="tel" id="phone" placeholder="+91 9876543210" required>
+
+                            <label for="category">Category *</label>
+                            <select id="category" required>
+                                <option value="two-wheeler">Two-Wheeler</option>
+                                <option value="four-wheeler">Four-Wheeler</option>
+                            </select>
+
+                            <button type="submit" class="btn" onclick="window.location.href='products.html';">Sign Up</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Contact Preview Section -->
+    <div class="preview">
+        <div class="para">
+            <h1><b>Ready to find out more?</b></h1>
+            <h3>Drop a message. We'll make sure your time is well spent.</h3>
+        </div>
+        <div class="Contact">
+            <button id="btn">
+                <a href="Contact.html" style="color: black; text-decoration: none"><b>Contact Us</b></a>
+            </button>
+        </div>
+    </div>
+
+    <!-- Footer Section -->
+    <footer>
+        <div class="footer-container">
+            <div class="footer-section">
+                <h3>Company</h3>
+                <ul>
+                    <li><a href="#">About Us</a></li>
+                    <li><a href="#">Privacy Policy</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-section">
+                <h3>Communities</h3>
+                <ul>
+                    <li><a href="#">Developers</a></li>
+                    <li><a href="#">Advertising</a></li>
+                    <li><a href="#">Investors</a></li>
+                    <li><a href="#">Vendors</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-section">
+                <h3>Useful Links</h3>
+                <ul>
+                    <li><a href="#">Support</a></li>
+                    <li><a href="#">App</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <hr>
+            <p>© 2024 PARKVERSE मुंबई</p>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script src="your-script.js"></script>
+
+</body>
+</html>

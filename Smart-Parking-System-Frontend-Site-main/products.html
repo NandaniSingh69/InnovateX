@@ -1,0 +1,817 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PARKVERSE मुंबई - Find Parking</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://kit.fontawesome.com/e15170961c.js" crossorigin="anonymous"></script>
+    <style>
+        /* Reset and base styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        /* Header styles */
+        .header {
+            background-color: #fff;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .Logo {
+            height: 60px;
+            width: auto;
+        }
+        
+        .search-container {
+            flex-grow: 1;
+            margin: 0 20px;
+        }
+        
+        .searchBar input {
+            width: 100%;
+            padding: 10px 15px;
+            border: 1px solid #ddd;
+            border-radius: 25px;
+        }
+        
+        .follow {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .social-icons img {
+            height: 30px;
+            width: 30px;
+            border-radius: 50%;
+        }
+        
+        /* Second header styles */
+        .SecondHeader {
+            background-color: #f8f9fa;
+            padding: 10px 0;
+            border-bottom: 1px solid #e9ecef;
+        }
+        
+        .SecondHeader nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .brand h1 {
+            font-size: 1.8rem;
+            margin: 0;
+        }
+        
+        .navlink ul {
+            display: flex;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+        
+        .navlink ul li {
+            margin-left: 20px;
+        }
+        
+        .navlink ul li a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+        
+        .navlink ul li a:hover {
+            color: #3c6dff;
+        }
+        
+        /* Hamburger menu */
+        .hamburger-menu {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            position: relative;
+        }
+        
+        .bar {
+            width: 25px;
+            height: 3px;
+            background-color: #333;
+            margin: 3px 0;
+            transition: 0.4s;
+        }
+        
+        .hamburger-dropdown {
+            display: none;
+            position: absolute;
+            right: 0;
+            top: 40px;
+            background-color: white;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 1000;
+            list-style-type: none;
+            padding: 12px 16px;
+        }
+        
+        .hamburger-dropdown.show {
+            display: block;
+        }
+        
+        .hamburger-dropdown li {
+            padding: 8px 0;
+        }
+        
+        .hamburger-dropdown li a {
+            text-decoration: none;
+            color: #333;
+        }
+        
+        /* Map container */
+        .map-container {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            height: calc(100vh - 180px);
+        }
+        
+        #map {
+            flex-grow: 1;
+            width: 100%;
+            height: 100%;
+        }
+        
+        /* Controls for map */
+        .map-controls {
+            background-color: white;
+            padding: 15px;
+            box-shadow: 0 -2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .location-input {
+            width: 100%;
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        
+        .location-input input {
+            flex-grow: 1;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        
+        .btn-primary {
+            background-color: #3c6dff;
+            border-color: #3c6dff;
+        }
+        
+        .parking-list {
+            max-height: 150px;
+            overflow-y: auto;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 10px;
+            margin-top: 10px;
+            background-color: #f9f9f9;
+        }
+        
+        .parking-item {
+            padding: 8px;
+            border-bottom: 1px solid #eee;
+            cursor: pointer;
+        }
+        
+        .parking-item:hover {
+            background-color: #f0f0f0;
+        }
+        
+        .parking-item:last-child {
+            border-bottom: none;
+        }
+        
+        /* Custom control style */
+        .buttonStyle {
+            background-color: #fff;
+            border: 2px solid #3c6dff;
+            border-radius: 3px;
+            box-shadow: 0 2px 6px rgba(0,0,0,.3);
+            color: #3c6dff;
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 14px;
+            margin: 10px;
+            padding: 8px 16px;
+            text-align: center;
+        }
+        
+        .buttonStyle:hover {
+            background-color: #3c6dff;
+            color: #fff;
+        }
+        
+        /* Footer styles */
+        footer {
+            background-color: #f8f9fa;
+            padding: 20px 0;
+            margin-top: auto;
+        }
+        
+        .footer {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .footer th {
+            text-align: left;
+            padding-bottom: 10px;
+            width: 33.33%;
+        }
+        
+        .footer td {
+            vertical-align: top;
+        }
+        
+        .footer .nav_a {
+            display: inline-block;
+            text-decoration: none;
+            color: #333;
+            margin-bottom: 8px;
+        }
+        
+        .footer .nav_a:hover {
+            color: #3c6dff;
+        }
+        
+        .final-footer {
+            text-align: center;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #e9ecef;
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .navlink {
+                display: none;
+            }
+            
+            .hamburger-menu {
+                display: flex;
+            }
+            
+            .header {
+                flex-wrap: wrap;
+            }
+            
+            .search-container {
+                order: 3;
+                width: 100%;
+                margin: 10px 0 0 0;
+            }
+            
+            .footer th, .footer td {
+                display: block;
+                width: 100%;
+                padding: 5px 0;
+            }
+        }
+        
+        /* Error message for map loading */
+        .map-error {
+            display: none;
+            text-align: center;
+            padding: 20px;
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+            border-radius: 4px;
+            margin: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <a href="index.html"><img src="Logo.png" alt="logo" class="Logo"></a>
+        <div class="search-container">
+            <form class="searchBar">
+                <input type="text" placeholder="Search our services..." name="search">
+            </form>
+        </div>
+        
+        <div class="follow">
+            <a href="https://www.facebook.com/" class="social-icons" target="_blank"><img src="Facebook.jpg" alt="Facebook"></a>
+            <a href="https://www.instagram.com/" class="social-icons" target="_blank"><img src="Instagram.jpg" alt="Instagram"></a>
+            <a href="https://www.twitter.com/" class="social-icons" target="_blank"><img src="Twitter.jpg" alt="Twitter"></a>
+        </div>  
+        <div class="hamburger-menu">
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <ul class="hamburger-dropdown">
+                <li><a href="home.html">Home</a></li>
+                <li><a href="products.html">Booking</a></li>
+                <!-- <li><a href="Contact.html">Booking</a></li> -->
+                <li><a href="Contact.html">Contact</a></li>
+                <li><a href="signinup.html">Sign In/Up</a></li>
+                    <a href="https://www.facebook.com/" class="social-icons" target="_blank"><img src="Facebook.jpg" alt="Facebook"></a>
+                    <a href="https://www.instagram.com/" class="social-icons" target="_blank"><img src="Instagram.jpg" alt="Instagram"></a>
+                    <a href="https://www.twitter.com/" class="social-icons" target="_blank"><img src="Twitter.jpg" alt="Twitter"></a>
+                </li>
+            </ul>
+        </div>        
+    </div>
+
+    <div class="SecondHeader">
+        <nav>
+            <div class="brand">
+                <h1>PARKVERSE <span style="color: rgb(48, 124, 255);">मुंबई</span></h1>
+            </div>
+            <div class="navlink">
+                <ul>
+                    <li><a href="home.html">Home</a></li>
+                    <li><a href="products.html">Booking</a></li>
+                    <!-- <li><a href="Contact.html">Booking</a></li> -->
+                    <li><a href="Contact.html">Contact</a></li>
+                    <li><a href="signinup.html">Sign In/Up</a></li>
+                </ul>
+            </div>
+        </nav>
+    </div>
+
+    <div class="map-container">
+        <div class="map-controls">
+            <div class="location-input">
+                <input type="text" id="location-search" placeholder="Enter your location...">
+                <button id="search-btn" class="btn btn-primary">Find Parking</button>
+                <button id="use-my-location" class="btn btn-outline-secondary">Use My Location</button>
+            </div>
+            <div class="parking-list" id="parking-results">
+                <!-- Parking results will be displayed here -->
+                <div class="parking-item">Search for nearby parking spots...</div>
+            </div>
+        </div>
+        <div id="map"></div>
+        <div id="map-error" class="map-error">
+            Failed to load Google Maps. Please check your internet connection and refresh the page.
+        </div>
+    </div>
+
+    <footer>
+        <table class="footer">
+            <thead>
+                <tr style="color:#3c6dff">
+                    <th>Company</th>
+                    <th>Communities</th>
+                    <th>Useful links</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        <a id="footerlink1" href="#" class="nav_a">About Us</a><br/>
+                        <a id="footerlink2" href="#" class="nav_a">Privacy-Policy</a><br/>
+                    </td>
+                    <td>
+                        <a id="footerlink3" href="#" class="nav_a">Developers</a><br/>
+                        <a id="footerlink4" href="#" class="nav_a">Advertising</a><br/>
+                        <a id="footerlink5" href="#" class="nav_a">Investors</a><br/>
+                        <a id="footerlink6" href="#" class="nav_a">Vendors</a><br/>
+                    </td>
+                    <td>
+                        <a id="footerlink7" href="#" class="nav_a" id="support">Support</a><br/>
+                        <a id="footerlink8" href="#" class="nav_a">App</a><br/>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="final-footer" style="color:#3c6dff">
+            <h4>© 2024 PARKVERSE मुंबई</h4>
+        </div>
+    </footer>
+    
+    <script>
+        // Mock parking data for demonstration
+        const parkingLocations = [
+    { id: 4, name: "Juhu Beach Parking", position: { lat: 19.0883, lng: 72.8262 }, availableSpots: 8, hourlyRate: "₹100" },
+    { id: 5, name: "Worli Sea Face Parking", position: { lat: 19.0237, lng: 72.8149 }, availableSpots: 15, hourlyRate: "₹70" },
+    { id: 6, name: "Nariman Point Parking", position: { lat: 18.9256, lng: 72.8242 }, availableSpots: 30, hourlyRate: "₹90" },
+    { id: 7, name: "Churchgate Station Parking", position: { lat: 18.9322, lng: 72.8264 }, availableSpots: 5, hourlyRate: "₹75" },
+    { id: 8, name: "Powai Lake Parking", position: { lat: 19.1273, lng: 72.9062 }, availableSpots: 25, hourlyRate: "₹40" },
+    { id: 9, name: "Malad West Parking", position: { lat: 19.1826, lng: 72.8403 }, availableSpots: 17, hourlyRate: "₹45" },
+    { id: 10, name: "Chembur Station Parking", position: { lat: 19.0543, lng: 72.8958 }, availableSpots: 10, hourlyRate: "₹50" }
+];
+
+
+        // Global variables
+        let map;
+        let markers = [];
+        let infoWindow;
+        let geocoder;
+        let userPositionMarker;
+        const defaultLocation = { lat: 19.0760, lng: 72.8777 }; // Mumbai center
+
+        // Initialize the map
+        function initMap() {
+            try {
+                // Create map centered at Mumbai
+                map = new google.maps.Map(document.getElementById("map"), {
+                    zoom: 12,
+                    center: defaultLocation,
+                    mapTypeControl: true,
+                    streetViewControl: true,
+                    fullscreenControl: true
+                });
+                
+                // Create geocoder for address lookup
+                geocoder = new google.maps.Geocoder();
+                
+                // Create a single info window to reuse
+                infoWindow = new google.maps.InfoWindow();
+                
+                // Create center control button
+                const centerControlDiv = document.createElement("div");
+                const centerControl = createCenterControl(map);
+                centerControlDiv.appendChild(centerControl);
+                map.controls[google.maps.ControlPosition.TOP_CENTER].push(centerControlDiv);
+                
+                // Set up event listeners
+                document.getElementById('search-btn').addEventListener('click', searchLocation);
+                document.getElementById('use-my-location').addEventListener('click', getUserLocation);
+                
+                // Add event listener for the search input (Enter key)
+                document.getElementById('location-search').addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        e.preventDefault();
+                        searchLocation();
+                    }
+                });
+                
+                // Initialize hamburger menu
+                initHamburgerMenu();
+                
+                // Hide error message if visible
+                document.getElementById('map-error').style.display = 'none';
+                document.getElementById('map').style.display = 'block';
+            } catch (error) {
+                console.error("Error initializing map:", error);
+                document.getElementById('map-error').style.display = 'block';
+                document.getElementById('map').style.display = 'none';
+            }
+        }
+
+        // Create center control button
+        function createCenterControl(map) {
+            const controlButton = document.createElement("button");
+            controlButton.classList.add('buttonStyle');
+            controlButton.textContent = "Center Map";
+            controlButton.title = "Click to recenter the map";
+            controlButton.type = "button";
+            
+            controlButton.addEventListener("click", () => {
+                map.setCenter(defaultLocation);
+                map.setZoom(12);
+            });
+            
+            return controlButton;
+        }
+
+        // Search for a location and find nearby parking
+        function searchLocation() {
+            const address = document.getElementById('location-search').value;
+            
+            if (!address) {
+                alert('Please enter a location to search');
+                return;
+            }
+            
+            geocoder.geocode({ address: address + ', Mumbai, India' }, (results, status) => {
+                if (status === 'OK') {
+                    if (results[0]) {
+                        const position = results[0].geometry.location;
+                        
+                        // Move map to the location
+                        map.setCenter(position);
+                        map.setZoom(15);
+                        
+                        // Mark the searched location
+                        markUserPosition(position);
+                        
+                        // Find nearby parking
+                        findNearbyParking(position);
+                    } else {
+                        alert('No results found for your search');
+                    }
+                } else {
+                    alert('Geocode was not successful for the following reason: ' + status);
+                }
+            });
+        }
+
+        // Get user's current location
+        function getUserLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                    (position) => {
+                        const userLocation = {
+                            lat: position.coords.latitude,
+                            lng: position.coords.longitude
+                        };
+                        
+                        // Move map to user location
+                        map.setCenter(userLocation);
+                        map.setZoom(15);
+                        
+                        // Mark user's position
+                        markUserPosition(userLocation);
+                        
+                        // Find nearby parking
+                        findNearbyParking(userLocation);
+                        
+                        // Update search input with address (reverse geocoding)
+                        geocoder.geocode({ location: userLocation }, (results, status) => {
+                            if (status === 'OK') {
+                                if (results[0]) {
+                                    document.getElementById('location-search').value = results[0].formatted_address;
+                                }
+                            }
+                        });
+                    },
+                    () => {
+                        alert('Error: The Geolocation service failed. Please enable location services or enter your location manually.');
+                    }
+                );
+            } else {
+                alert('Error: Your browser doesn\'t support geolocation. Please enter your location manually.');
+            }
+        }
+
+        // Mark user's position on the map
+        function markUserPosition(position) {
+            // Clear existing user marker if any
+            if (userPositionMarker) {
+                userPositionMarker.setMap(null);
+            }
+            
+            // Create new marker for user's position
+            userPositionMarker = new google.maps.Marker({
+                position: position,
+                map: map,
+                title: 'Your Location',
+                icon: {
+                    path: google.maps.SymbolPath.CIRCLE,
+                    scale: 10,
+                    fillColor: '#4285F4',
+                    fillOpacity: 1,
+                    strokeColor: '#FFFFFF',
+                    strokeWeight: 2
+                },
+                zIndex: 999 // Ensure it's on top
+            });
+        }
+
+        // Find parking spots near a given position
+        function findNearbyParking(position) {
+            // Clear existing markers
+            clearMarkers();
+            
+            // Find nearby parking spots (in real app, this would be a server call)
+            const nearbyParking = findNearbyParkingSpots(position);
+            
+            // Display results in the list
+            displayParkingResults(nearbyParking);
+            
+            // Add markers for each parking location
+            nearbyParking.forEach(parking => {
+                addParkingMarker(parking);
+            });
+        }
+
+        // Simulate finding nearby parking spots
+        function findNearbyParkingSpots(position) {
+            // Calculate distances and sort by distance
+            const parkingWithDistance = mockParkingData.map(parking => {
+                const distance = calculateDistance(
+                    position.lat(), position.lng(),
+                    parking.position.lat, parking.position.lng
+                );
+                return { ...parking, distance };
+            });
+            
+            // Sort by distance and return closest ones first
+            return parkingWithDistance
+                .sort((a, b) => a.distance - b.distance)
+                .slice(0, 5); // Return closest 5 spots
+        }
+
+        // Calculate distance between two points using Haversine formula
+        function calculateDistance(lat1, lon1, lat2, lon2) {
+            const R = 6371; // Radius of the earth in km
+            const dLat = deg2rad(lat2 - lat1);
+            const dLon = deg2rad(lon2 - lon1);
+            const a = 
+                Math.sin(dLat/2) * Math.sin(dLat/2) +
+                Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) * 
+                Math.sin(dLon/2) * Math.sin(dLon/2); 
+            const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
+            const d = R * c; // Distance in km
+            return d;
+        }
+
+        function deg2rad(deg) {
+            return deg * (Math.PI/180);
+        }
+
+        // Display parking results in the list
+        function displayParkingResults(parkingSpots) {
+            const resultsContainer = document.getElementById('parking-results');
+            resultsContainer.innerHTML = '';
+            
+            if (parkingSpots.length === 0) {
+                resultsContainer.innerHTML = '<div class="parking-item">No parking spots found nearby</div>';
+                return;
+            }
+            
+            parkingSpots.forEach(parking => {
+                const distanceKm = parking.distance.toFixed(1);
+                const parkingItem = document.createElement('div');
+                parkingItem.className = 'parking-item';
+                parkingItem.innerHTML = `
+                    <strong>${parking.name}</strong><br>
+                    <span>Distance: ${distanceKm} km</span><br>
+                    <span>Available: ${parking.availableSpots} spots</span><br>
+                    <span>Rate: ${parking.hourlyRate}/hour</span>
+                `;
+                
+                // Add click event to center map on this parking
+                parkingItem.addEventListener('click', () => {
+                    map.setCenter(parking.position);
+                    map.setZoom(17);
+                    showParkingInfo(parking);
+                });
+                
+                resultsContainer.appendChild(parkingItem);
+            });
+        }
+
+        // Add marker for a parking location
+        function addParkingMarker(parking) {
+            const marker = new google.maps.Marker({
+                position: parking.position,
+                map: map,
+                title: parking.name,
+                icon: {
+                    url: 'https://maps.google.com/mapfiles/ms/icons/blue-dot.png'
+                }
+            });
+            
+            // Add click event to show info window
+            marker.addListener('click', () => {
+                showParkingInfo(parking, marker);
+            });
+            
+            markers.push(marker);
+        }
+
+        // Show info window for a parking location
+        function showParkingInfo(parking, marker = null) {
+            // Create info window content
+            const content = `
+                <div style="width: 200px">
+                    <h5 style="margin-top: 0; color: #3c6dff;">${parking.name}</h5>
+                    <p>
+                        <strong>Available Spots:</strong> ${parking.availableSpots}<br>
+                        <strong>Rate:</strong> ${parking.hourlyRate}/hour<br>
+                        <strong>Distance:</strong> ${parking.distance.toFixed(1)} km
+                    </p>
+                    <button class="btn btn-sm btn-primary book-parking" 
+                            onclick="bookParking(${parking.id})">Book Now</button>
+                </div>
+            `;
+            
+            // Set info window content and position
+            infoWindow.setContent(content);
+            
+            // If marker provided, open at marker, otherwise open at parking position
+            if (marker) {
+                infoWindow.open(map, marker);
+            } else {
+                infoWindow.setPosition(parking.position);
+                infoWindow.open(map);
+            }
+        }
+
+        // Clear all parking markers
+        function clearMarkers() {
+            markers.forEach(marker => {
+                marker.setMap(null);
+            });
+            markers = [];
+        }
+
+        // Booking function (placeholder)
+      
+        function bookParking(parkingId) {
+    alert(`Booking parking spot ID ${parkingId} - This would redirect to a booking page in a real application`);
+}
+
+
+
+        // Initialize hamburger menu
+        function initHamburgerMenu() {
+            const hamburger = document.querySelector('.hamburger-menu');
+            const dropdown = document.querySelector('.hamburger-dropdown');
+
+            hamburger.addEventListener('click', function () {
+                dropdown.classList.toggle('show');
+            });
+
+            window.addEventListener('click', function (e) {
+                if (!hamburger.contains(e.target) && !dropdown.contains(e.target)) {
+                    dropdown.classList.remove('show');
+                }
+            });
+        }
+
+        // Store last clicked links (for analytics)
+        document.addEventListener('DOMContentLoaded', function() {
+            // Main navigation links
+            const navLinks = document.querySelectorAll('.navlink ul li a');
+            navLinks.forEach(function(link) {
+                link.addEventListener('click', function(e) {
+                    storeClickedLink(this);
+                });
+            });
+            
+            // Hamburger menu links
+            const hamburgerLinks = document.querySelectorAll('.hamburger-dropdown li a:not(.social-icons > a)');
+            hamburgerLinks.forEach(function(link) {
+                link.addEventListener('click', function(e) {
+                    storeClickedLink(this);
+                });
+            });
+            
+            // Footer links
+            const footerLinks = document.querySelectorAll('.footer .nav_a');
+            footerLinks.forEach(function(link) {
+                link.addEventListener('click', function(e) {
+                    if(this.getAttribute('href') === '#') {
+                        e.preventDefault();
+                    }
+                    storeFooterClickedLink(this);
+                });
+            });
+        });
+
+        // Store clicked link info
+        function storeClickedLink(link) {
+            localStorage.setItem('ParkverseLastClickedLinkId', link.id || '');
+            localStorage.setItem('ParkverseLastClickedLinkHref', link.getAttribute('href') || '');
+            localStorage.setItem('ParkverseLastClickedLinkText', link.innerText || '');
+        }
+
+        // Store clicked footer link info
+        function storeFooterClickedLink(link) {
+            localStorage.setItem('ParkverseLastClickedFooterLinkId', link.id || '');
+            localStorage.setItem('ParkverseLastClickedFooterLinkHref', link.getAttribute('href') || '');
+            localStorage.setItem('ParkverseLastClickedFooterLinkText', link.innerText || '');
+        }
+
+        // Handle Google Maps API loading error
+        function gm_authFailure() {
+            document.getElementById('map-error').style.display = 'block';
+            document.getElementById('map').style.display = 'none';
+            console.error("Google Maps API authentication failed");
+        }
+
+        // Load Google Maps API and initialize map
+        window.initMap = initMap;
+    </script>
+    
+    <!-- Add Google Maps API script with your API key -->
+    <script async defer
+      src="https://maps.googleapis.com/maps/api/js?932765671612-flg3turliahb6mu31fc71grfv7jpgsig.apps.googleusercontent.com&callback=initMap&libraries=places">
+    </script>
+</body>
+</html>
